@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>leaflet tutorial</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .coordinate {
+            position: absolute;
+            bottom: 10px;
+            right: 50%;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background-color: #000000;
+            color: #fff;
+            border: 1px solid red;
+            border-radius: 0px;
+        }
+    </style>     
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="Gandakiprovince.js"></script>
+<script>
+    var map = L.map('map').setView([28.227574, 83.998950], 8);
+
+var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+osm.addTo(map);
+
+googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+});
+
+googleStreets.addTo(map);
+
+googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+});
+
+googleSat.addTo(map);
+
+
+var secondMarker= L.marker([28.0671501, 83.3513899]).addTo(map);
+var popup2 = secondMarker.bindPopup("<b>This Is My Work!</b><br>City: Majuwabazar").openPopup();
+var thirdMarker= L.marker([27.71, 85.32]).addTo(map);
+var popup3 = thirdMarker.bindPopup("<b>This Is My Capital City!</b><br>City: Kathmandu").openPopup();
+var firstMarker= L.marker([28.227574, 83.998950]).addTo(map);
+var popup = firstMarker.bindPopup("<b>This Is My Home!</b><br>City: Pokhara").openPopup();
+
+//console.log(singleMarker).toGeoJSON());
+var baseMaps = {
+    "OSM": osm,
+    "Google Satellite": googleSat,
+    "Google Streets": googleStreets
+
+};
+
+var overlayMaps = {
+    "Home": firstMarker,
+    "Work": secondMarker,
+    "Capital_City": thirdMarker
+};
+L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+
+//var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+//layer controller
+//geojson layer
+L.geoJSON(gandakiProvince).addTo(map);
+//L.geoJSON(pointJson).addTo(map);
+</script>
+    
